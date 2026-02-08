@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <title>Événements à venir</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">Student Events</div>
+
+    <nav class="menu">
+      <a class="menu-link" href="/events">Événements</a>
+      <a class="menu-btn" href="/events/create">Créer un événement</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <div class="panel">
+    <div class="panel-head">
+      <h1>Événements à Venir</h1>
+      <a class="btn-green" href="/events/create">Créer un événement</a>
+    </div>
+
+    <section class="cards">
+      <article class="event-card" th:each="e : ${events}">
+        <div class="event-left">
+          <div class="event-title" th:text="${e.title}"></div>
+
+          <div class="event-date"
+               th:text="${#temporals.format(e.dateTime,'dd MMM yyyy, HH:mm')}"></div>
+
+          <div class="event-loc" th:text="${e.location}"></div>
+
+          <div class="event-seats" th:if="${e.remainingSeats > 0}">
+            <span th:text="${e.remainingSeats}"></span>/<span th:text="${e.maxParticipants}"></span>
+            places disponibles
+          </div>
+
+          <div class="event-full" th:if="${e.remainingSeats == 0}">
+            Complet
+          </div>
+        </div>
+
+        <div class="event-right">
+          <a class="btn-see" th:href="@{'/events/' + ${e.id}}">Voir</a>
+        </div>
+      </article>
+
+      <p class="empty" th:if="${#lists.isEmpty(events)}">Aucun événement pour le moment.</p>
+    </section>
+  </div>
+</main>
+
+</body>
+</html>
