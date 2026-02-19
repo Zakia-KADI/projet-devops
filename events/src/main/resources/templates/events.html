@@ -2,59 +2,69 @@
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
-  <title>Événements à venir</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Événements</title>
   <link rel="stylesheet" th:href="@{/style.css}">
-
 </head>
+
 <body>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="brand">Student Events</div>
+<div th:replace="header :: mainHeader('events','light')"></div>
 
-    <nav class="menu">
-      <a class="menu-link" href="/events">Événements</a>
-      <a class="menu-btn" href="/events/create">Créer un événement</a>
-    </nav>
+<section class="events-page">
+
+  <div class="events-header">
+    <h1>Tous les événements</h1>
+
+    <div class="events-actions">
+      <input id="searchInput" type="text" placeholder="Rechercher..." class="search-input">
+      <a th:href="@{/events/create}" class="btn btn-primary">Créer un événement</a>
+    </div>
   </div>
-</header>
 
-<main class="page">
-  <div class="panel">
-    <div class="panel-head">
-      <h1>Événements à Venir</h1>
-      <a class="btn-green" href="/events/create">Créer un événement</a>
+  <div class="events-grid">
+  <div class="event-card" th:each="e : ${events} "  th:attr="data-search=${(e.title + ' ' + e.description).toLowerCase()}">
+    <div class="event-left">
+      <div class="event-icon">
+        <img src="/img/img.png" alt="calendar">
+      </div>
+
+      <div class="event-info">
+        <h3 th:text="${e.title}">Titre</h3>
+        <p class="event-date" th:text="${#temporals.format(e.dateTime,'dd MMM yyyy, HH:mm')}">Date</p>
+        <p class="event-desc" th:text="${e.description}">Description</p>
+      </div>
     </div>
 
-    <section class="cards">
-      <article class="event-card" th:each="e : ${events}">
-        <div class="event-left">
-          <div class="event-title" th:text="${e.title}"></div>
-
-          <div class="event-date"
-               th:text="${#temporals.format(e.dateTime,'dd MMM yyyy, HH:mm')}"></div>
-
-          <div class="event-loc" th:text="${e.location}"></div>
-
-          <div class="event-seats" th:if="${e.remainingSeats > 0}">
-            <span th:text="${e.remainingSeats}"></span>/<span th:text="${e.maxParticipants}"></span>
-            places disponibles
-          </div>
-
-          <div class="event-full" th:if="${e.remainingSeats == 0}">
-            Complet
-          </div>
-        </div>
-
-        <div class="event-right">
-          <a class="btn-see" th:href="@{'/events/' + ${e.id}}">Voir</a>
-        </div>
-      </article>
-
-      <p class="empty" th:if="${#lists.isEmpty(events)}">Aucun événement pour le moment.</p>
-    </section>
+    <a th:href="@{'/events/' + ${e.id}}" class="event-btn">
+      Voir
+    </a>
   </div>
-</main>
+</div>
+
+
+  </div>
+
+</section>
+<script>
+  (function () {
+    const input = document.getElementById('searchInput');
+    if (!input) return;
+
+    const cards = Array.from(document.querySelectorAll('.event-card'));
+
+    input.addEventListener('input', function () {
+      const q = (input.value || '').trim().toLowerCase();
+
+      cards.forEach(card => {
+        const hay = (card.getAttribute('data-search') || '');
+        const show = hay.includes(q);
+        card.style.display = show ? '' : 'none';
+      });
+    });
+  })();
+</script>
+
 
 </body>
 </html>

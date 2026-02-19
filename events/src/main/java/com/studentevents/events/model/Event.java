@@ -1,31 +1,53 @@
 package com.studentevents.events.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Entity
+@Table(name = "events")
 public class Event {
-    private final String id;
+
+    @Id
+    private String id;
 
     private String title;
+
+    @Column(length = 2000)
     private String description;
+
     private LocalDateTime dateTime;
+
     private String location;
+
     private int maxParticipants;
-    private int registeredCount;
+
+    @Column(nullable = true)
+    private String createdByEmail;
+
 
     public Event() {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Event(String title, String description, LocalDateTime dateTime, String location, int maxParticipants) {
-        this.id = UUID.randomUUID().toString();
-        this.title = title;
-        this.description = description;
-        this.dateTime = dateTime;
-        this.location = location;
-        this.maxParticipants = maxParticipants;
-        this.registeredCount = 0;
-    }
+    public Event(String title, String description, LocalDateTime dateTime,
+             String location, int maxParticipants) {
+    this(title, description, dateTime, location, maxParticipants, null);
+}
+
+
+    public Event(String title, String description, LocalDateTime dateTime,
+             String location, int maxParticipants, String createdByEmail) {
+
+    this(); 
+
+    this.title = title;
+    this.description = description;
+    this.dateTime = dateTime;
+    this.location = location;
+    this.maxParticipants = maxParticipants;
+    this.createdByEmail = createdByEmail;
+}
 
     public String getId() { return id; }
 
@@ -44,23 +66,6 @@ public class Event {
     public int getMaxParticipants() { return maxParticipants; }
     public void setMaxParticipants(int maxParticipants) { this.maxParticipants = maxParticipants; }
 
-    public int getRegisteredCount() { return registeredCount; }
-
-    public int getRemainingSeats() {
-        return Math.max(0, maxParticipants - registeredCount);
-    }
-
-    public boolean isFull() {
-        return getRemainingSeats() == 0;
-    }
-
-    public void registerOne() {
-        if (isFull()) throw new IllegalStateException("Complet");
-        registeredCount++;
-    }
-
-    public void unregisterOne() {
-        if (registeredCount <= 0) throw new IllegalStateException("Aucune inscription");
-        registeredCount--;
-    }
+    public String getCreatedByEmail() { return createdByEmail; }
+    public void setCreatedByEmail(String createdByEmail) { this.createdByEmail = createdByEmail; }
 }
