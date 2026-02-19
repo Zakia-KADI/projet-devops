@@ -123,6 +123,7 @@ public class EventController {
         return "redirect:/events/" + id;
     }
 
+
     @GetMapping("/events/{id}/desinscription-form")
     public String showForm(@PathVariable String id, Model model) {
         var e = service.getOrThrow(id);
