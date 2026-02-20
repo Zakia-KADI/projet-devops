@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Événements</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<div th:replace="header :: mainHeader('events','light')"></div>
+
+<section class="events-page">
+
+  <div class="events-header">
+    <h1>Tous les événements</h1>
+
+    <div class="events-actions">
+      <input id="searchInput" type="text" placeholder="Rechercher..." class="search-input">
+      <a th:href="@{/events/create}" class="btn btn-primary">Créer un événement</a>
+    </div>
+  </div>
+
+  <div class="events-grid">
+  <div class="event-card" th:each="e : ${events} "  th:attr="data-search=${(e.title + ' ' + e.description).toLowerCase()}">
+    <div class="event-left">
+      <div class="event-icon">
+        <img src="/img/img.png" alt="calendar">
+      </div>
+
+      <div class="event-info">
+        <h3 th:text="${e.title}">Titre</h3>
+        <p class="event-date" th:text="${#temporals.format(e.dateTime,'dd MMM yyyy, HH:mm')}">Date</p>
+        <p class="event-desc" th:text="${e.description}">Description</p>
+      </div>
+    </div>
+
+    <a th:href="@{'/events/' + ${e.id}}" class="event-btn">
+      Voir
+    </a>
+  </div>
+</div>
+
+
+  </div>
+
+</section>
+<script>
+  (function () {
+    const input = document.getElementById('searchInput');
+    if (!input) return;
+
+    const cards = Array.from(document.querySelectorAll('.event-card'));
+
+    input.addEventListener('input', function () {
+      const q = (input.value || '').trim().toLowerCase();
+
+      cards.forEach(card => {
+        const hay = (card.getAttribute('data-search') || '');
+        const show = hay.includes(q);
+        card.style.display = show ? '' : 'none';
+      });
+    });
+  })();
+</script>
+
+
+</body>
+</html>

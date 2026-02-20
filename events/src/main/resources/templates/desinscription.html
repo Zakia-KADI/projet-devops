@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8"/>
+  <title>Désinscription</title>
+<link rel="stylesheet" th:href="@{/style.css(v=${#dates.createNow().time})}">
+</head>
+
+<body>
+<div th:replace="header :: mainHeader('events','light')"></div>
+
+
+  <main class="page">
+    <div class="panel">
+
+      <h1>Désinscription</h1>
+
+      <form class="form-stack"
+            method="post"
+            th:action="@{/events/{id}/desinscription(id=${event.id})}">
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <button type="submit" class="btn btn-red">
+          Confirmer désinscription
+        </button>
+
+        <a class="btn" th:href="@{/events/{id}(id=${event.id})}">Annuler</a>
+
+      </form>
+
+    </div>
+  </main>
+
+</body>
+</html>
