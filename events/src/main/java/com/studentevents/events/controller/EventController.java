@@ -38,7 +38,6 @@ public class EventController {
         );
     }
 
-
     @GetMapping("/")
     public String home() {
         return "index";
@@ -89,9 +88,13 @@ public class EventController {
     }
 
     @GetMapping("/events/{id}")
-    public String detail(@PathVariable String id, Model model) {
+    public String detail(@PathVariable String id, Model model,
+                         @RequestParam(required = false) String msg) {
+
         var e = service.getOrThrow(id);
+
         model.addAttribute("event", toView(e));
+        model.addAttribute("msg", msg);
         return "event-detail";
     }
 
@@ -122,7 +125,6 @@ public class EventController {
 
         return "redirect:/events/" + id;
     }
-
 
     @GetMapping("/events/{id}/desinscription-form")
     public String showForm(@PathVariable String id, Model model) {
@@ -161,7 +163,6 @@ public class EventController {
         model.addAttribute("joinedEvents", joined);
         return "my-events";
     }
-
 
     public static record EventView(
             String id,
