@@ -1,10 +1,13 @@
 package com.studentevents.events.controller;
 
+import com.studentevents.events.model.Event;
 import com.studentevents.events.service.EventService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +20,24 @@ public class EventController {
         this.service = service;
     }
 
+    private String getUserEmailOrNull(HttpSession session) {
+        Object v = session.getAttribute("userEmail");
+        return (v instanceof String s && !s.isBlank()) ? s : null;
+    }
+
+    private EventView toView(Event e) {
+        return new EventView(
+                e.getId(),
+                e.getTitle(),
+                e.getDescription(),
+                e.getDateTime(),
+                e.getLocation(),
+                e.getMaxParticipants(),
+                service.nbInscrits(e.getId()),
+                service.placesRestantes(e.getId())
+        );
+    }
+
     @GetMapping("/")
     public String home() {
         return "index";
@@ -24,52 +45,133 @@ public class EventController {
 
     @GetMapping("/events")
     public String list(Model model) {
-        model.addAttribute("events", service.list());
+        var views = service.listEvents().stream()
+                .map(this::toView)
+                .toList();
+
+        model.addAttribute("events", views);
         return "events";
     }
 
     @GetMapping("/events/create")
-    public String createForm() {
+    public String createForm(Model model, HttpSession session, RedirectAttributes ra) {
+        String userEmail = getUserEmailOrNull(session);
+        if (userEmail == null) {
+            ra.addFlashAttribute("alertMsg", "Connecte-toi pour créer un événement.");
+            return "redirect:/login";
+        }
+
+        model.addAttribute("event", new Event());
         return "create";
     }
 
-    @PostMapping("/events/create")
+    @PostMapping("/events")
     public String createSubmit(
             @RequestParam String title,
             @RequestParam(required = false) String description,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime dateTime,
             @RequestParam String location,
-            @RequestParam int maxParticipants
+            @RequestParam int maxParticipants,
+            HttpSession session,
+            RedirectAttributes ra
     ) {
-        service.create(title, description, dateTime, location, maxParticipants);
+        String userEmail = getUserEmailOrNull(session);
+        if (userEmail == null) {
+            ra.addFlashAttribute("alertMsg", "Connecte-toi pour créer un événement.");
+            return "redirect:/login";
+        }
+
+        service.createEvent(title, description, dateTime, location, maxParticipants, userEmail);
+
+        ra.addFlashAttribute("alertMsg", "Événement créé avec succès");
         return "redirect:/events";
     }
 
     @GetMapping("/events/{id}")
     public String detail(@PathVariable String id, Model model,
                          @RequestParam(required = false) String msg) {
-        model.addAttribute("event", service.getOrThrow(id));
+
+        var e = service.getOrThrow(id);
+
+        model.addAttribute("event", toView(e));
         model.addAttribute("msg", msg);
-        return "event";
+        return "event-detail";
     }
 
-    @PostMapping("/events/{id}/register")
-    public String register(@PathVariable String id) {
-        try {
-            service.register(id);
-            return "redirect:/events/" + id + "?msg=Inscription+OK";
-        } catch (Exception e) {
-            return "redirect:/events/" + id + "?msg=Complet";
-        }
+    @GetMapping("/events/{id}/inscription")
+    public String inscriptionPage(@PathVariable String id, Model model) {
+        var e = service.getOrThrow(id);
+        model.addAttribute("eventId", id);
+        model.addAttribute("event", toView(e));
+        return "inscription";
     }
 
-    @PostMapping("/events/{id}/unregister")
-    public String unregister(@PathVariable String id) {
+    @PostMapping("/events/{id}/inscription")
+    public String inscrire(@PathVariable String id,
+                           @RequestParam String email,
+                           @RequestParam String prenom,
+                           @RequestParam String nom,
+                           @RequestParam(required = false) String telephone,
+                           @RequestParam(required = false) String numeroEtudiant,
+                           @RequestParam(required = false) String commentaire,
+                           RedirectAttributes ra) {
+
         try {
-            service.unregister(id);
-            return "redirect:/events/" + id + "?msg=Desinscription+OK";
-        } catch (Exception e) {
-            return "redirect:/events/" + id + "?msg=Aucune+inscription";
+            service.inscrire(id, email, prenom, nom, telephone, numeroEtudiant, commentaire);
+            ra.addFlashAttribute("alertMsg", "Inscription réussie");
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            ra.addFlashAttribute("alertMsg", ex.getMessage());
         }
+
+        return "redirect:/events/" + id;
     }
+
+    @GetMapping("/events/{id}/desinscription-form")
+    public String showForm(@PathVariable String id, Model model) {
+        var e = service.getOrThrow(id);
+        model.addAttribute("event", toView(e));
+        return "desinscription";
+    }
+
+    @PostMapping("/events/{id}/desinscription")
+    public String desinscrire(@PathVariable String id,
+                              @RequestParam String email,
+                              RedirectAttributes ra) {
+
+        boolean ok = service.desinscrire(id, email);
+
+        ra.addFlashAttribute("alertMsg",
+                ok ? "Désinscription réussie" : "Utilisateur non inscrit");
+
+        return "redirect:/events/" + id;
+    }
+
+    @GetMapping("/my-events")
+    public String myEvents(HttpSession session, Model model) {
+        String userEmail = getUserEmailOrNull(session);
+        if (userEmail == null) return "redirect:/login";
+
+        var created = service.listEventsCreatedBy(userEmail).stream()
+                .map(this::toView)
+                .toList();
+
+        var joined = service.listEventsWhereUserRegistered(userEmail).stream()
+                .map(this::toView)
+                .toList();
+
+        model.addAttribute("createdEvents", created);
+        model.addAttribute("joinedEvents", joined);
+        return "my-events";
+    }
+
+    public static record EventView(
+            String id,
+            String title,
+            String description,
+            LocalDateTime dateTime,
+            String location,
+            int maxParticipants,
+            long nbInscrits,
+            long placesRestantes
+    ) {}
 }

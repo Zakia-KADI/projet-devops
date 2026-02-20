@@ -1,17 +1,6 @@
-/* =========================
-   BASE
-   ========================= */
+
 *{ box-sizing: border-box; }
 
-
-
-/* =========================
-   HEADER (TON HEADER)
-   hero-nav = sur image (home) -> transparent
-   site-nav = pages internes  -> background visible
-   ========================= */
-
-/* structure commune */
 .hero-nav,
 .site-nav{
   padding: 14px 0;
@@ -42,25 +31,11 @@
   text-decoration:none;
 }
 
-
-
-/* =========================
-   EVENTS LIST (cards)
-   ========================= */
-
-
-
-
 .event-left{
   display:flex;
   flex-direction:column;
   gap:4px;
 }
-
-
-/* =========================
-   INSCRIPTION - DESIGN CARTE
-   ========================= */
 
 .form-card{
   max-width: 760px;
@@ -145,7 +120,7 @@
   --text: #f3f4f6;
   --muted: rgba(255,255,255,0.72);
 
-  --brand: #f97316;       /* orange */
+  --brand: #f97316;       
   --brand-2: #fb923c;
   --brand-dark: #c2410c;
 
@@ -153,16 +128,11 @@
   --shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
-
 body{
   background:#f3f4f6;
   color:#111827;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
-
-/* =========================
-   NAVBAR
-   ========================= */
 .hero-nav{
   position: absolute;
   top:0; left:0;
@@ -198,36 +168,28 @@ body{
   background: rgba(255,255,255,0.08);
 }
 
-
-/* =========================
-   NAVBAR FIX SPACING
-   ========================= */
-
 .hero-nav .nav-inner{
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 18px 40px;   /* 🔥 PLUS D’ESPACE */
+  padding: 18px 40px;   
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* espace entre les liens */
 .hero-links{
   display: flex;
   align-items: center;
-  gap: 40px; /* 🔥 espace entre boutons */
+  gap: 40px; 
 }
 
-/* améliorer les liens */
 .hero-links a{
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 13px;
 }
 
-/* bouton logout */
 .hero-cta{
   margin-left: 20px;
   padding: 10px 16px;
@@ -235,9 +197,6 @@ body{
 }
 
 
-/* =========================
-   BUTTONS
-   ========================= */
 .btn{
   display:inline-flex;
   align-items:center;
@@ -267,11 +226,9 @@ body{
 }
 .btn-dark:hover{ filter: brightness(1.08); }
 
-/* compatibilité avec tes anciennes classes */
 .btn-see{ background: var(--brand); color:#111 !important; border-radius: 10px; }
 .btn-green{ background:#111; color:#fff !important; border-radius: 10px; }
 
-/* bouton logout */
 .hero-cta{
   background: var(--brand);
   color:#111 !important;
@@ -284,9 +241,6 @@ body{
 }
 .hero-cta:hover{ filter: brightness(1.05); }
 
-/* =========================
-   HOME / HERO
-   ========================= */
 .hero{
   position: relative;
   min-height: 520px;
@@ -360,9 +314,7 @@ body{
   color: rgba(255,255,255,0.85);
 }
 
-/* =========================
-   HOME / INTRO + FEATURES
-   ========================= */
+
 .section{
   padding: 54px 0;
 }
@@ -385,7 +337,7 @@ body{
   max-width: 820px;
   line-height: 1.8;
   color: rgba(17,24,39,0.75);
-  font-size: 17px;  /* 🔥 plus grand */
+  font-size: 17px;  
 }
 
 
@@ -403,8 +355,8 @@ body{
   border: 1px solid rgba(249,115,22,0.35);
   border-radius: 14px;
 
-  padding: 30px 20px;  /* ✅ garde un seul padding */
-  min-height: 300px;   /* 🔥 augmente encore un peu */
+  padding: 30px 20px;  
+  min-height: 300px;   
 
   box-shadow: var(--shadow);
 
@@ -464,8 +416,6 @@ body{
   justify-content:center;
   flex-wrap: wrap;
 }
-
-/* responsive */
 @media (max-width: 900px){
   .feature-grid{ grid-template-columns: 1fr; }
 }
@@ -473,17 +423,12 @@ body{
   .hero-links{ display:none; }
 }
 
-/* =========================
-   EVENTS PAGE
-   ========================= */
-
 .events-page{
   max-width: 1100px;
   margin: 40px auto;
   padding: 0 20px;
 }
 
-/* header */
 .events-header{
   display: flex;
   justify-content: space-between;
@@ -503,7 +448,6 @@ body{
   gap: 10px;
 }
 
-/* search */
 .search-input{
   padding: 10px 14px;
   border-radius: 10px;
@@ -517,15 +461,12 @@ body{
   border-color: #f97316;
 }
 
-/* grid */
 .events-grid{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
 }
 
-/* card */
-/* ===== EVENTS FIX (override) ===== */
 
 .events-grid{
   display: grid;
@@ -560,7 +501,7 @@ body{
   display: flex;
   align-items: center;
   gap: 18px;
-  min-width: 0; /* important pour éviter overflow */
+  min-width: 0; 
 }
 
 .event-icon{
@@ -573,7 +514,7 @@ body{
   background: rgba(249,115,22,0.08);
   border: 1px solid rgba(249,115,22,0.16);
   flex: 0 0 auto;
-  margin-left: -60px; /* 🔥 pousse vers la gauche */
+  margin-left: -60px; 
 
 
 }
@@ -613,7 +554,6 @@ body{
   text-overflow: ellipsis;
 }
 
-/* bouton voir à droite */
 .event-btn{
   background: #f97316;
   color: #111 !important;
@@ -630,7 +570,6 @@ body{
   filter: brightness(1.05);
 }
 
-/* responsive */
 @media(max-width: 520px){
   .event-card{
     flex-direction: column;
@@ -642,16 +581,14 @@ body{
   }
 }
 
-/* ===== ESPACEMENT ===== */
 .events-header{
-  margin-bottom: 80px; /* 🔥 espace sous le titre */
+  margin-bottom: 80px; 
 }
 
 .events-grid{
   margin-top: 10px;
 }
 
-/* ===== REFLET ORANGE ===== */
 .event-card{
   box-shadow:
     0 10px 25px rgba(0,0,0,0.06),
@@ -668,11 +605,6 @@ body{
     0 20px 50px rgba(249,115,22,0.22);
 }
 
-
-/* =========================
-   PAGE DETAIL (CLEAN)
-   ========================= */
-
 .detail-page{
   max-width: 1100px;
   margin: 40px auto;
@@ -687,7 +619,6 @@ body{
   border: 1px solid rgba(249,115,22,0.12);
 }
 
-/* HERO */
 .detail-hero{
   height: 220px;
   background-size: cover;
@@ -715,13 +646,11 @@ body{
   font-size: 14px;
 }
 
-/* CONTENT */
 .detail-content{
   display: grid;
   grid-template-columns: 1fr 500px;
 }
 
-/* LEFT */
 .detail-left{
   padding: 20px;
 }
@@ -733,7 +662,6 @@ body{
   font-size: 15px;
 }
 
-/* CARDS */
 .info-cards{
   display: flex;
   gap: 10px;
@@ -767,7 +695,6 @@ body{
   font-size: 22px;
 }
 
-/* RIGHT */
 .detail-right{
   padding: 20px;
   background: #fff7ed;
@@ -794,7 +721,6 @@ body{
   font-weight: 600;
 }
 
-/* BUTTONS */
 .btn-group{
   display: flex;
   gap: 10px;
@@ -823,7 +749,6 @@ body{
   filter: brightness(1.03);
 }
 
-/* bouton noir stylé */
 .btn-danger{
   background: #111;
   border: 1px solid rgba(249,115,22,0.25);
@@ -840,7 +765,6 @@ body{
   font-weight: bold;
 }
 
-/* RESPONSIVE */
 @media (max-width: 900px){
   .detail-content{
     grid-template-columns: 1fr;
@@ -857,10 +781,6 @@ body{
     justify-content: center;
   }
 }
-
-/* =========================
-   CREATE EVENT - PRO UI
-   ========================= */
 
 .form-card-pro{
   max-width: 960px;
@@ -933,17 +853,12 @@ body{
   margin-top: 6px;
 }
 
-/* responsive */
 @media (max-width: 700px){
   .form-card-pro{ padding: 18px; }
   .pro-actions{ flex-direction: column; }
   .pro-actions .btn{ width: 100%; }
 }
 
-/* =========================
-   MY EVENTS PRO (Tabs + Cards)
-   Compatible avec ton backend (createdEvents / joinedEvents)
-   ========================= */
 
 .my-wrap-pro{
   max-width: 1100px;
@@ -971,7 +886,6 @@ body{
   font-weight: 600;
 }
 
-/* Tabs */
 .my-tabs{
   display:flex;
   gap: 10px;
@@ -1002,7 +916,6 @@ body{
   background: rgba(255,122,0,0.10);
 }
 
-/* Panels */
 .my-panel{ display:none; }
 .my-panel.is-active{ display:block; }
 
@@ -1017,7 +930,6 @@ body{
   font-weight: 600;
 }
 
-/* Grid cards */
 .my-grid{
   display:grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1031,7 +943,7 @@ body{
   .my-h1{ font-size: 34px; }
 }
 
-/* Card */
+
 .my-card{
   background: #fff;
   border: 1px solid rgba(17,24,39,0.08);
@@ -1099,7 +1011,6 @@ body{
   border: 1px solid rgba(255,122,0,0.22);
 }
 
-/* Empty state */
 .my-empty{
   grid-column: 1 / -1;
   background:#fff;
@@ -1118,11 +1029,7 @@ body{
   height: 16px;
   object-fit: contain;
 }
-/* =========================
-   LOGIN FULL SCREEN (avec header)
-   gauche = noir/orange sur toute la zone
-   droite = fond clair
-   ========================= */
+
 
 :root{
   --brand:#ff7a00;
@@ -1131,48 +1038,42 @@ body{
   --muted:#6b7280;
 }
 
-/* Full height */
 html, body{
   height:100%;
   margin:0;
 }
 
-/* body en colonne : header puis contenu */
 body.auth-page.full-auth{
   min-height:100vh;
   display:flex;
   flex-direction:column;
-  background:#111; /* évite le gris autour */
+  background:#111; 
 }
 
-/* MAIN prend tout l'espace restant sous le header */
 .auth-main-full{
   flex:1 1 auto;
   display:flex;
-  padding:0;                 /* ✅ PAS de marge (zone rouge remplie) */
+  padding:0;                 
   margin:0;
 }
 
-/* Grille plein écran (sans gap) */
 .auth-shell-full{
   width:100%;
   flex:1 1 auto;
   display:grid;
   grid-template-columns: 1fr 1fr;
-  gap:0;                      /* ✅ PAS d’espace entre les 2 */
+  gap:0;                      
   align-items:stretch;
 }
 
-/* ------- LEFT FULL (zone rouge) ------- */
 .auth-left-full{
   position:relative;
   overflow:hidden;
-  border-radius:0;            /* ✅ pas de coins arrondis */
+  border-radius:0;            
   padding:48px 54px;
   background: linear-gradient(135deg, #2b1405 0%, #110a05 35%, #000 100%);
 }
 
-/* Glow orange */
 .auth-left-full::before{
   content:"";
   position:absolute;
@@ -1184,7 +1085,6 @@ body.auth-page.full-auth{
   pointer-events:none;
 }
 
-/* contenu au-dessus du glow */
 .auth-left-full *{
   position:relative;
   z-index:1;
@@ -1211,7 +1111,7 @@ body.auth-page.full-auth{
   line-height:1.6;
 }
 
-/* Feature box */
+
 .auth-feature{
   margin-top:22px;
   display:flex;
@@ -1233,7 +1133,6 @@ body.auth-page.full-auth{
 .feature-title{color:#fff; font-weight:900;}
 .feature-sub{color:rgba(255,255,255,.78); font-weight:700; margin-top:2px;}
 
-/* bottom link collé en bas */
 .auth-bottom{
   position:absolute;
   left:54px;
@@ -1251,16 +1150,14 @@ body.auth-page.full-auth{
 }
 .link-orange:hover{ text-decoration:underline; }
 
-/* ------- RIGHT FULL ------- */
 .auth-right-full{
-  background: #f3f4f6;       /* côté droit clair comme sur ton image */
+  background: #f3f4f6;       
   display:flex;
   align-items:center;
   justify-content:center;
   padding:48px 40px;
 }
 
-/* Card */
 .auth-card{
   width:100%;
   max-width:680px;
@@ -1284,7 +1181,6 @@ body.auth-page.full-auth{
   font-weight:700;
 }
 
-/* fields */
 .auth-form{ display:grid; gap:14px; }
 .field-pro label{
   display:block;
@@ -1324,7 +1220,6 @@ body.auth-page.full-auth{
   padding:2px 0;
 }
 
-/* button */
 .auth-btn{
   margin-top:6px;
   border:none;
@@ -1347,10 +1242,10 @@ body.auth-page.full-auth{
   font-weight:700;
 }
 
-/* ------- Responsive ------- */
 @media (max-width: 980px){
   .auth-shell-full{ grid-template-columns: 1fr; }
   .auth-right-full{ padding:22px 16px; }
   .auth-left-full{ padding:28px 20px; }
   .auth-bottom{ position:static; margin-top:18px; }
 }
+

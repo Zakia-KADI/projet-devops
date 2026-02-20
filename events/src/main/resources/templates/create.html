@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Créer un événement</title>
+  <link rel="stylesheet" th:href="@{/style.css(v=${#dates.createNow().time})}">
+</head>
+
+<body>
+  <div th:replace="~{header :: mainHeader('events','light')}"></div>
+
+  <main class="page">
+    <section class="panel form-card form-card-pro">
+
+      <a class="back-link-pro" th:href="@{/events}">← Retour aux événements</a>
+
+      <div class="form-card-head pro-head">
+        <h1>Créer un événement</h1>
+        <p class="muted">Renseigne les informations pour publier un nouvel événement.</p>
+      </div>
+
+      <form class="form-grid pro-form"
+            th:action="@{/events}"
+            th:object="${event}"
+            method="post">
+
+        <div class="form-section">
+          <div class="section-title">Informations de l’événement</div>
+
+          <div class="field">
+            <label>Titre <span class="req">*</span></label>
+            <input type="text" th:field="*{title}" placeholder="Ex: Soirée networking" required>
+          </div>
+
+          <div class="field">
+            <label>Description</label>
+            <textarea th:field="*{description}" rows="4" placeholder="Décris l’événement, le programme, etc."></textarea>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-title">Date et lieu</div>
+
+          <div class="field two">
+            <div>
+              <label>Date & heure <span class="req">*</span></label>
+              <input type="datetime-local" th:field="*{dateTime}" required>
+            </div>
+
+            <div>
+              <label>Lieu <span class="req">*</span></label>
+              <input type="text" th:field="*{location}" placeholder="Ex: ENSA, Salle A12" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Nombre max de participants <span class="req">*</span></label>
+            <input type="number" th:field="*{maxParticipants}" min="1" placeholder="Ex: 50" required>
+          </div>
+        </div>
+
+        <div class="actions pro-actions">
+          <button class="btn btn-primary" type="submit">Créer</button>
+          <a class="btn btn-dark" th:href="@{/events}">Annuler</a>
+        </div>
+
+      </form>
+    </section>
+  </main>
+</body>
+</html>

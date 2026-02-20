@@ -1,9 +1,11 @@
-//logique metier
 package com.studentevents.events.service;
 
 import com.studentevents.events.model.Event;
+import com.studentevents.events.model.Inscription;
 import com.studentevents.events.repository.EventRepository;
+import com.studentevents.events.repository.InscriptionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,54 +13,88 @@ import java.util.List;
 @Service
 public class EventService {
 
-    private final EventRepository repo;
+    private final EventRepository events;
+    private final InscriptionRepository inscriptions;
 
-    public EventService(EventRepository repo) {
-        this.repo = repo;
-        //seed();
+    public EventService(EventRepository events, InscriptionRepository inscriptions) {
+        this.events = events;
+        this.inscriptions = inscriptions;
     }
 
-    private void seed() {
-        if (!repo.findAll().isEmpty()) return;
-
-        repo.save(new Event("Conférence IA", "Une conférence sur l'intelligence artificielle",
-                LocalDateTime.now().plusDays(7).withHour(18).withMinute(0),
-                "Amphithéâtre B", 30));
-
-        repo.save(new Event("Soirée Étudiante", "Soirée au club",
-                LocalDateTime.now().plusDays(10).withHour(21).withMinute(0),
-                "Club XYZ", 50));
-
-        // Pour montrer "Complet" : 0 place restante
-        Event t = new Event("Tournoi de Football", "Matchs inter-facs",
-                LocalDateTime.now().plusDays(14).withHour(14).withMinute(0),
-                "Stade Universitaire", 1);
-        t.registerOne(); // complet
-        repo.save(t);
-    }
-
-    public List<Event> list() {
-        return repo.findAll();
+    public List<Event> listEvents() {
+        return events.findAll();
     }
 
     public Event getOrThrow(String id) {
-        return repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Event not found"));
+        return events.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found"));
     }
 
-    public Event create(String title, String description, LocalDateTime dateTime, String location, int maxParticipants) {
-        Event e = new Event(title, description, dateTime, location, maxParticipants);
-        return repo.save(e);
+    public void createEvent(String title, String description, LocalDateTime dateTime,
+                            String location, int maxParticipants, String userEmail) {
+
+        Event event = new Event(
+                title,
+                description,
+                dateTime,
+                location,
+                maxParticipants,
+                userEmail
+        );
+
+        events.save(event);
     }
 
-    public void register(String id) {
-        Event e = getOrThrow(id);
-        e.registerOne();
-        repo.save(e);
+    public List<Event> listEventsCreatedBy(String email) {
+        return events.findByCreatedByEmail(email);
     }
 
-    public void unregister(String id) {
-        Event e = getOrThrow(id);
-        e.unregisterOne();
-        repo.save(e);
+    public long nbInscrits(String eventId) {
+        return inscriptions.countByEventId(eventId);
+    }
+
+    public long placesRestantes(String eventId) {
+        Event e = getOrThrow(eventId);
+        return Math.max(0, e.getMaxParticipants() - nbInscrits(eventId));
+    }
+
+    @Transactional
+    public void inscrire(String eventId, String email, String prenom, String nom,
+                         String telephone, String numeroEtudiant, String commentaire) {
+
+        String norm = email.trim().toLowerCase();
+
+        if (inscriptions.existsByEventIdAndEmail(eventId, norm)) {
+            throw new IllegalStateException("Déjà inscrit");
+        }
+        if (placesRestantes(eventId) == 0) {
+            throw new IllegalStateException("Complet");
+        }
+
+        inscriptions.save(new Inscription(eventId, norm, prenom, nom, telephone, numeroEtudiant, commentaire));
+    }
+
+    public List<Event> listEventsWhereUserRegistered(String email) {
+        String norm = email.trim().toLowerCase();
+
+        List<String> eventIds = inscriptions.findEventIdsByEmail(norm);
+        if (eventIds.isEmpty()) return List.of();
+
+        return events.findAllById(eventIds);
+    }
+
+    @Transactional
+    public boolean desinscrire(String eventId, String email) {
+        String norm = email.trim().toLowerCase();
+
+        if (!inscriptions.existsByEventIdAndEmail(eventId, norm)) {
+            return false;
+        }
+
+        inscriptions.deleteByEventIdAndEmail(eventId, norm);
+        return true;
     }
 }
+
+
+
