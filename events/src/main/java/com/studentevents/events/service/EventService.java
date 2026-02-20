@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class EventSrvice {
+public class EventService {
 
     private final EventRepository events;
     private final InscriptionRepository inscriptions;
@@ -97,5 +97,6 @@ public class EventSrvice {
         return true;
     }
 }
+
 
 
