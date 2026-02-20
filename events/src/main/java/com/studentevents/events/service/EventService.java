@@ -30,7 +30,7 @@ public class EventSrvice {
                 .orElseThrow(() -> new IllegalArgumentException("Event not found"));
     }
 
-  public void createEvent(String title, String description, LocalDateTime dateTime,
+  public event createEvent(String title, String description, LocalDateTime dateTime,
                         String location, int maxParticipants, String userEmail) {
 
     Event event = new Event(
@@ -97,4 +97,5 @@ public class EventSrvice {
         return true;
     }
 }
+
 
