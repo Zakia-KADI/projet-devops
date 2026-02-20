@@ -48,57 +48,16 @@
           <h2>Connexion</h2>
           <p class="auth-card-sub">Content de te revoir !</p>
 
+          <!-- messages d’erreur optionnels -->
           <div class="auth-alert" th:if="${param.error}">
             Identifiants incorrects. Réessaie.
           </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           
           <div class="auth-alert ok" th:if="${param.logout}">
             Déconnecté avec succès.
           </div>
 
+         
           <form class="auth-form" th:action="@{/login}" method="post">
 
             <div class="field-pro">
@@ -144,4 +103,3 @@
 
 </body>
 </html>
-
