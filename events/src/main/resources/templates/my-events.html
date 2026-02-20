@@ -9,7 +9,6 @@
 
 <body>
 
-<!-- ✅ ON GARDE TON HEADER EXACT -->
 <div th:replace="~{header :: mainHeader('events','light')}"></div>
 
 <main class="page">
@@ -22,7 +21,7 @@
         <p class="my-sub">Gère tes événements créés et tes inscriptions.</p>
       </div>
 
-      <!-- ✅ même route que ton fichier actuel -->
+    
       <a class="btn btn-green" th:href="@{/events/create}">Créer un événement</a>
     </div>
 
@@ -44,7 +43,6 @@
       </div>
 
       <div class="my-grid">
-        <!-- ✅ mêmes variables que ton code -->
         <article class="my-card" th:each="e : ${createdEvents}">
           <div class="my-card-head">
             <div class="my-card-title" th:text="${e.title}">Titre</div>
@@ -89,7 +87,6 @@
       </div>
 
       <div class="my-grid">
-        <!-- ✅ mêmes variables que ton code -->
         <article class="my-card" th:each="e : ${joinedEvents}">
           <div class="my-card-head">
             <div class="my-card-title" th:text="${e.title}">Titre</div>
