@@ -9,6 +9,7 @@
 
 <body>
 
+
 <div th:replace="~{header :: mainHeader('events','light')}"></div>
 
 <main class="page">
@@ -43,6 +44,7 @@
       </div>
 
       <div class="my-grid">
+        
         <article class="my-card" th:each="e : ${createdEvents}">
           <div class="my-card-head">
             <div class="my-card-title" th:text="${e.title}">Titre</div>
@@ -137,3 +139,4 @@
 
 </body>
 </html>
+
