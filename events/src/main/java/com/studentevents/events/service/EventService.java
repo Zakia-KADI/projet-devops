@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class EventService {
+public class EventSrvice {
 
     private final EventRepository events;
     private final InscriptionRepository inscriptions;
@@ -31,19 +31,20 @@ public class EventService {
     }
 
     public void createEvent(String title, String description, LocalDateTime dateTime,
-                        String location, int maxParticipants, String userEmail) {
+                            String location, int maxParticipants, String userEmail) {
 
-    Event event = new Event(
-            title,
-            description,
-            dateTime,
-            location,
-            maxParticipants,
-            userEmail
-    );
+        Event event = new Event(
+                title,
+                description,
+                dateTime,
+                location,
+                maxParticipants
+        );
 
-    events.save(event); 
-}
+        event.setCreatedByEmail(userEmail);
+
+        events.save(event);
+    }
 
     public List<Event> listEventsCreatedBy(String email) {
         return events.findByCreatedByEmail(email);
