@@ -31,20 +31,68 @@ public class EventService {
     }
 
     public void createEvent(String title, String description, LocalDateTime dateTime,
-                        String location, int maxParticipants, String userEmail) {
+                            String location, int maxParticipants, String userEmail) {
 
-    Event event = new Event(
-            title,
-            description,
-            dateTime,
-            location,
-            maxParticipants,
-            userEmail
-    );
+        Event event = new Event(
+                title,
+                description,
+                dateTime,
+                location,
+                maxParticipants
+        );
 
-    events.save(event); 
-}
+        event.setCreatedByEmail(userEmail);
 
-    
-    
+        events.save(event);
+    }
+
+    public List<Event> listEventsCreatedBy(String email) {
+        return events.findByCreatedByEmail(email);
+    }
+
+    public long nbInscrits(String eventId) {
+        return inscriptions.countByEventId(eventId);
+    }
+
+    public long placesRestantes(String eventId) {
+        Event e = getOrThrow(eventId);
+        return Math.max(0, e.getMaxParticipants() - nbInscrits(eventId));
+    }
+
+    @Transactional
+    public void inscrire(String eventId, String email, String prenom, String nom,
+                         String telephone, String numeroEtudiant, String commentaire) {
+
+        String norm = email.trim().toLowerCase();
+
+        if (inscriptions.existsByEventIdAndEmail(eventId, norm)) {
+            throw new IllegalStateException("Déjà inscrit");
+        }
+        if (placesRestantes(eventId) == 0) {
+            throw new IllegalStateException("Complet");
+        }
+
+        inscriptions.save(new Inscription(eventId, norm, prenom, nom, telephone, numeroEtudiant, commentaire));
+    }
+
+    public List<Event> listEventsWhereUserRegistered(String email) {
+        String norm = email.trim().toLowerCase();
+
+        List<String> eventIds = inscriptions.findEventIdsByEmail(norm);
+        if (eventIds.isEmpty()) return List.of();
+
+        return events.findAllById(eventIds);
+    }
+
+    @Transactional
+    public boolean desinscrire(String eventId, String email) {
+        String norm = email.trim().toLowerCase();
+
+        if (!inscriptions.existsByEventIdAndEmail(eventId, norm)) {
+            return false;
+        }
+
+        inscriptions.deleteByEventIdAndEmail(eventId, norm);
+        return true;
+    }
 }

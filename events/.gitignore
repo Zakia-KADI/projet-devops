@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Local H2 database (generated)
+events/data/
+*.mv.db
+*.trace.db
+
+# workflows must be at repo root only
+events/.github/
