@@ -9,13 +9,11 @@
 
 <body class="auth-page full-auth">
 
-  <!-- ✅ Header (comme tu veux) -->
   <div th:replace="~{header :: mainHeader('login','light')}"></div>
 
   <main class="uth-main auth-main-full">
     <section class="auth-shell auth-shell-full">
 
-      <!-- LEFT (dark welcome) -->
       <aside class="auth-left auth-left-full">
       
 
@@ -45,13 +43,11 @@
         </div>
       </aside>
 
-      <!-- RIGHT (form card) -->
       <section class="auth-right auth-right-full">
         <div class="auth-card">
           <h2>Connexion</h2>
           <p class="auth-card-sub">Content de te revoir !</p>
 
-          <!-- messages d’erreur optionnels -->
           <div class="auth-alert" th:if="${param.error}">
             Identifiants incorrects. Réessaie.
           </div>
@@ -103,7 +99,6 @@
             Déconnecté avec succès.
           </div>
 
-          <!-- ✅ adapte l’action si ton backend utilise une autre route -->
           <form class="auth-form" th:action="@{/login}" method="post">
 
             <div class="field-pro">
@@ -149,3 +144,4 @@
 
 </body>
 </html>
+
