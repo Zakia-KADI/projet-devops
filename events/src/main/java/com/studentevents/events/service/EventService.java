@@ -31,19 +31,20 @@ public class EventService {
     }
 
     public void createEvent(String title, String description, LocalDateTime dateTime,
-                        String location, int maxParticipants, String userEmail) {
+                            String location, int maxParticipants, String userEmail) {
 
-    Event event = new Event(
-            title,
-            description,
-            dateTime,
-            location,
-            maxParticipants,
-            userEmail
-    );
+        Event event = new Event(
+                title,
+                description,
+                dateTime,
+                location,
+                maxParticipants
+        );
 
-    events.save(event); 
-}
+        event.setCreatedByEmail(userEmail);
+
+        events.save(event);
+    }
 
     public List<Event> listEventsCreatedBy(String email) {
         return events.findByCreatedByEmail(email);
@@ -74,11 +75,9 @@ public class EventService {
         inscriptions.save(new Inscription(eventId, norm, prenom, nom, telephone, numeroEtudiant, commentaire));
     }
 
-    // ✅ NOUVEAU : événements auxquels je suis inscrit(e)
     public List<Event> listEventsWhereUserRegistered(String email) {
         String norm = email.trim().toLowerCase();
 
-        // inscriptions de cet email -> eventIds -> events
         List<String> eventIds = inscriptions.findEventIdsByEmail(norm);
         if (eventIds.isEmpty()) return List.of();
 
