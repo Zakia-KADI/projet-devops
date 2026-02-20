@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Inscription</title>
+  <link rel="stylesheet" th:href="@{/style.css(v=${#dates.createNow().time})}">
+</head>
+
+<body>
+
+  <div th:replace="header :: mainHeader('events','light')"></div>
+
+  <main class="page">
+    <section class="panel form-card">
+
+<div class="form-card-head">
+
+  <h1 class="form-title">
+    Inscription à l’événement
+    <span class="event-name" th:text="${event.title}">Nom événement</span>
+  </h1>
+
+  <div class="event-meta">
+    <span class="meta-item">
+      📅 <span th:text="${#temporals.format(event.dateTime,'dd MMMM yyyy HH:mm')}">12 avril 2026 14:00</span>
+    </span>
+
+
+    <span class="meta-item">
+        📍 <span th:text="${event.location}">Amphi A</span>
+    </span>
+  </div>
+
+  <br></br>
+
+</div>      
+
+      <form class="form-grid"
+            method="post"
+            th:action="@{/events/{id}/inscription(id=${eventId})}">
+
+        <div class="field">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" name="email" placeholder="ex: prenom.nom@etu.fr" required>
+        </div>
+
+        <div class="field two">
+          <div>
+            <label>Prénom <span class="req">*</span></label>
+            <input type="text" name="prenom" required>
+          </div>
+          <div>
+            <label>Nom <span class="req">*</span></label>
+            <input type="text" name="nom" required>
+          </div>
+        </div>
+
+        <div class="field two">
+          <div>
+            <label>Téléphone</label>
+            <input type="text" name="telephone" placeholder="06...">
+          </div>
+          <div>
+            <label>Numéro étudiant</label>
+            <input type="text" name="numeroEtudiant" placeholder="ex: 12345678">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Commentaire</label>
+          <textarea name="commentaire" rows="4" ></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-green">
+            Valider l’inscription
+          </button>
+
+          <a class="btn btn-ghost" th:href="@{/events/{id}(id=${eventId})}">
+            Annuler
+          </a>
+
+          <a class="back-link" th:href="@{/events/{id}(id=${eventId})}">
+            ← Retour événement
+          </a>
+        </div>
+
+      </form>
+
+    </section>
+  </main>
+
+  <script th:if="${alertMsg}">
+    alert('[[${alertMsg}]]');
+  </script>
+
+</body>
+
+</html>
