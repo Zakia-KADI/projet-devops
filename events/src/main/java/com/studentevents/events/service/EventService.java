@@ -38,10 +38,9 @@ public class EventService {
                 description,
                 dateTime,
                 location,
-                maxParticipants
+                maxParticipants,
+                userEmail
         );
-
-        event.setCreatedByEmail(userEmail);
 
         events.save(event);
     }
@@ -96,3 +95,6 @@ public class EventService {
         return true;
     }
 }
+
+
+

@@ -10,14 +10,13 @@
 
 <body>
 
-<!-- HEADER -->
+
 <div th:replace="header :: mainHeader('events','light')"></div>
 
 <main class="detail-page">
 
   <section class="detail-container">
 
-    <!-- HERO IMAGE -->
     <div class="detail-hero" th:style="|background-image:url('@{/img/hero.jpg}')|">
       <div class="hero-overlay">
         <h1 th:text="${event.title}">Titre événement</h1>
@@ -30,10 +29,8 @@
       </div>
     </div>
 
-    <!-- CONTENT -->
     <div class="detail-content">
-
-      <!-- LEFT -->
+    
       <div class="detail-left">
 
         <h2>Description</h2>
@@ -41,7 +38,7 @@
           Description de l’événement...
         </p>
 
-        <!-- INFO CARDS -->
+        
         <div class="info-cards">
 
           <div class="info-card">
@@ -77,16 +74,14 @@
 
       </div>
 
-      <!-- RIGHT (BOUTONS) -->
+  
  
       <div class="detail-right">
-
-            <!-- pas connecté -->
             <p th:if="${session.userEmail == null}" class="login-note">
                 Connecte-toi pour t'inscrire
             </p>
 
-            <!-- connecté -->
+            
             <div class="btn-group" th:if="${session.userEmail != null}">
 
                 <a th:href="@{/events/{id}/desinscription-form(id=${event.id})}"
@@ -101,12 +96,7 @@
 
           </div>
 
-      </div>
-
-   
-
-
-     
+      </div> 
 
     </div>
 
@@ -116,3 +106,5 @@
 
 </body>
 </html>
+
+
