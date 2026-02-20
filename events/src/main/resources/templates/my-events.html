@@ -9,6 +9,7 @@
 
 <body>
 
+
 <div th:replace="~{header :: mainHeader('events','light')}"></div>
 
 <main class="page">
@@ -21,9 +22,11 @@
         <p class="my-sub">Gère tes événements créés et tes inscriptions.</p>
       </div>
 
+    
       <a class="btn btn-green" th:href="@{/events/create}">Créer un événement</a>
     </div>
 
+    <!-- Tabs -->
     <div class="my-tabs">
       <button class="my-tab is-active" type="button" data-tab="created">
         Mes événements créés
@@ -33,6 +36,7 @@
       </button>
     </div>
 
+    <!-- Panel: created -->
     <section class="my-panel is-active" id="panel-created">
       <div class="my-panel-head">
         <h2>Mes événements créés</h2>
@@ -40,6 +44,7 @@
       </div>
 
       <div class="my-grid">
+        
         <article class="my-card" th:each="e : ${createdEvents}">
           <div class="my-card-head">
             <div class="my-card-title" th:text="${e.title}">Titre</div>
@@ -76,6 +81,7 @@
       </div>
     </section>
 
+    <!-- Panel: joined -->
     <section class="my-panel" id="panel-joined">
       <div class="my-panel-head">
         <h2>Mes inscriptions</h2>
@@ -114,6 +120,7 @@
   </section>
 </main>
 
+<!-- Tabs JS (frontend only) -->
 <script>
   (function () {
     const tabs = document.querySelectorAll('.my-tab');
@@ -131,5 +138,5 @@
 </script>
 
 </body>
-
 </html>
+

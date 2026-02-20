@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Détail événement</title>
+
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div th:replace="header :: mainHeader('events','light')"></div>
+
+<main class="detail-page">
+
+  <section class="detail-container">
+
+    <!-- HERO IMAGE -->
+    <div class="detail-hero" th:style="|background-image:url('@{/img/hero.jpg}')|">
+      <div class="hero-overlay">
+        <h1 th:text="${event.title}">Titre événement</h1>
+
+        <p class="hero-meta">
+          <span th:text="${#temporals.format(event.dateTime,'dd MMMM yyyy à HH:mm')}"></span>
+          •
+          <span th:text="${event.location}"></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="detail-content">
+
+      <!-- LEFT -->
+      <div class="detail-left">
+
+        <h2>Description</h2>
+        <p class="event-description" th:text="${event.description}">
+          Description de l’événement...
+        </p>
+
+        <!-- INFO CARDS -->
+        <div class="info-cards">
+
+          <div class="info-card">
+            <img src="/img/img4.png" alt="date">
+            <div>
+              <strong>Date et heure</strong>
+              <p th:text="${#temporals.format(event.dateTime,'dd MMMM yyyy à HH:mm')}"></p>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <span class="emoji"> <img src="/img/img5.png" alt="places"></span>
+            <div>
+              <strong>Lieu</strong>
+              <p th:text="${event.location}"></p>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <img src="/img/img.png" alt="places">
+            <div>
+              <strong>Places restantes</strong>
+              <p>
+                <span th:text="${event.remainingSeats}"></span> /
+                <span th:text="${event.maxParticipants}"></span>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <a th:href="@{/events}" class="back-link">← Retour aux événements</a>
+
+      </div>
+
+      <!-- RIGHT (BOUTONS) -->
+ 
+      <div class="detail-right">
+
+            <!-- pas connecté -->
+            <p th:if="${session.userEmail == null}" class="login-note">
+                Connecte-toi pour t'inscrire
+            </p>
+
+            <!-- connecté -->
+            <div class="btn-group" th:if="${session.userEmail != null}">
+
+                <a th:href="@{/events/{id}/desinscription-form(id=${event.id})}"
+                class="btn btn-danger">
+                Se désinscrire
+                </a>
+
+                <a th:href="@{/events/{id}/inscription(id=${event.id})}"
+                class="btn btn-primary">
+                S’inscrire
+                </a>
+
+          </div>
+
+      </div>
+
+   
+
+
+     
+
+    </div>
+
+  </section>
+
+</main>
+
+</body>
+</html>

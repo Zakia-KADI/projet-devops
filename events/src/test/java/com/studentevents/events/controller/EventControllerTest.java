@@ -27,7 +27,6 @@ class EventControllerTest {
 
     @Test
     void getEvents_shouldReturnEventsView() throws Exception {
-        // given
         Event e = new Event();
         e.setTitle("Conf");
         e.setDescription("ABC");
@@ -80,3 +79,4 @@ class EventControllerTest {
         );
     }
 }
+
