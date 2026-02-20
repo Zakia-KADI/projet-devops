@@ -30,22 +30,20 @@ public class EventService {
                 .orElseThrow(() -> new IllegalArgumentException("Event not found"));
     }
 
-  public event createEvent(String title, String description, LocalDateTime dateTime,
-                        String location, int maxParticipants, String userEmail) {
+    public void createEvent(String title, String description, LocalDateTime dateTime,
+                            String location, int maxParticipants, String userEmail) {
 
-    Event event = new Event(
-            title,
-            description,
-            dateTime,
-            location,
-            maxParticipants
-    );
+        Event event = new Event(
+                title,
+                description,
+                dateTime,
+                location,
+                maxParticipants,
+                userEmail
+        );
 
-    event.setCreatedByEmail(userEmail);
-
-    events.save(event);
-}
-
+        events.save(event);
+    }
 
     public List<Event> listEventsCreatedBy(String email) {
         return events.findByCreatedByEmail(email);
