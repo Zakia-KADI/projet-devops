@@ -29,7 +29,6 @@ jobs:
       - name: Build + Tests + Quality
         run: mvn -B clean verify
 
-
       - name: Upload JAR artifact
         if: success()
         uses: actions/upload-artifact@v4
