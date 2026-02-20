@@ -9,13 +9,11 @@
 
 <body class="auth-page full-auth">
 
-  <!-- ✅ Header (comme tu veux) -->
   <div th:replace="~{header :: mainHeader('signup','light')}"></div>
 
   <main class="auth-main auth-main-full">
     <section class="auth-shell auth-shell-full">
 
-      <!-- LEFT -->
       <aside class="auth-left auth-left-full">
         
 
@@ -44,16 +42,13 @@
         </div>
       </aside>
 
-      <!-- RIGHT -->
       <section class="auth-right auth-right-full">
         <div class="auth-card">
           <h2>Créer un compte</h2>
           <p class="auth-card-sub">Rejoins StudentEvents dès maintenant.</p>
 
-          <!-- msg flash (optionnel) -->
           <div class="auth-alert" th:if="${msg != null}" th:text="${msg}"></div>
 
-          <!-- ✅ adapte l’action si ton backend utilise une autre route -->
           <form class="auth-form" th:action="@{/signup}" method="post">
 
             <div class="field-pro">
@@ -113,4 +108,5 @@
 
 </body>
 </html>
+
 
