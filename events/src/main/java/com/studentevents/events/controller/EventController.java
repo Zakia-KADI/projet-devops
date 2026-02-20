@@ -175,4 +175,3 @@ public class EventController {
             long placesRestantes
     ) {}
 }
-
